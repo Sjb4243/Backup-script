@@ -9,9 +9,9 @@ import time
 today = date.today()
 today_format = today.strftime("%d_%b_%Y_")
 
-# Source files/directories and backup destination
-source_list = ["E:\\Backuptest\\angiking.jpg", "E:\\testing"]
-drive_destination = "E:\\Backups"
+# Source files/directories and destination
+source_list = [""]
+drive_destination = ""
 
 
 def save_to_google_drive(combinedName, files):
@@ -19,7 +19,7 @@ def save_to_google_drive(combinedName, files):
     g_login = GoogleAuth()
     g_login.LocalWebserverAuth()
     drive = GoogleDrive(g_login)
-    id = "1wj37ev8RM2lmEj-tXvnwbhSS-gj99ZZc"
+    id = ""
     #if path is a directory, zip the directory and upload it
     if os.path.isdir(files):
         archiv = shutil.make_archive(combinedName, "zip", files)
