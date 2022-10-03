@@ -10,19 +10,17 @@ today = date.today()
 today_format = today.strftime("%d_%b_%Y_")
 
 # Source files/directories and destination
-source_list = [""]
-drive_destination = ""
-
+source_list = ["E:\\Backuptest\\angiking.jpg", "E:\\testing", "E:\\Battlescribe"]
+drive_destination = "E:\\Backups"
+g_login = GoogleAuth()
+g_login.LocalWebserverAuth()
+drive = GoogleDrive(g_login)
+id = "1wj37ev8RM2lmEj-tXvnwbhSS-gj99ZZc"
 
 def save_to_google_drive(combinedName, files):
-    #get authentification from drive
-    g_login = GoogleAuth()
-    g_login.LocalWebserverAuth()
-    drive = GoogleDrive(g_login)
-    id = ""
     #if path is a directory, zip the directory and upload it
     if os.path.isdir(files):
-        archiv = shutil.make_archive(combinedName, "zip", files)
+        archiv = shutil.make_archive(combinedName, "gztar", files)
         gfile = drive.CreateFile({'title': combinedName + ".zip", 'parents': [{'id': id}]})
         gfile.SetContentFile(archiv)
         upload(combinedName, gfile, archiv)
@@ -45,6 +43,8 @@ def upload(combinedName, gfile, uploaded_file):
         time.sleep(2)
         upload(combinedName, gfile, uploaded_file)
 
+def clear_zips(combinedName):
+    os.remove(combinedName + ".tar.gz")
 
 def save_to_disk(fileSplit, combinedName, files):
     newDest = drive_destination + "\\" + fileSplit
@@ -66,7 +66,7 @@ def file_parsing(today_format, source_list, drive_destination):
         combinedName = today_format + fileSplit
         save_to_disk(fileSplit, combinedName, files)
         save_to_google_drive(combinedName, files)
-    print("All files saved to google drive\n")
-
+        # if os.path.isdir(files):
+        #     clear_zips(combinedName)
 file_parsing(today_format, source_list, drive_destination)
 time.sleep(5)
